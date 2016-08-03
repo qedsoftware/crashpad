@@ -8,3 +8,5 @@ HunterGate(
 )
 
 project(crashpad)
+
+add_subdirectory(client)
