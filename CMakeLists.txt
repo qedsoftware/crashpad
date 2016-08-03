@@ -10,3 +10,7 @@ HunterGate(
 project(crashpad)
 
 add_subdirectory(client)
+
+if(APPLE)
+  add_subdirectory(third_party/apple_cctools)
+endif()
