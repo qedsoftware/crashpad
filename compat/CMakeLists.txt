@@ -49,7 +49,12 @@ else()
   )
 endif()
 
-add_library(crashpad_compat ${sources})
+if(APPLE OR WIN32)
+  add_library(crashpad_compat ${sources})
+else()
+  # No real sources left for the target
+  message(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported")
+endif()
 
 if(APPLE)
   target_link_libraries(crashpad_compat PUBLIC apple_cctools)
