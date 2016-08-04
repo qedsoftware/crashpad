@@ -50,3 +50,12 @@ find_package(mini_chromium CONFIG REQUIRED)
 target_link_libraries(
     crashpad_client PUBLIC mini_chromium::base crashpad_util
 )
+
+install(
+    TARGETS crashpad_client
+    EXPORT "${targets_export_name}"
+    LIBRARY DESTINATION "lib"
+    ARCHIVE DESTINATION "lib"
+    RUNTIME DESTINATION "bin"
+    INCLUDES DESTINATION "${include_install_dir}"
+)
