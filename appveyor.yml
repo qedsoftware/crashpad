@@ -5,11 +5,12 @@
 environment:
   matrix:
     ###
-    - TOOLCHAIN: "default"
-      CONFIG: Release
+    # FIXME: see vs-14-2015
+    # - TOOLCHAIN: "default"
+    #   CONFIG: Release
 
-    - TOOLCHAIN: "default"
-      CONFIG: Debug
+    # - TOOLCHAIN: "default"
+    #   CONFIG: Debug
 
     ###
     - TOOLCHAIN: "ninja-vs-12-2013-win64"
@@ -53,12 +54,13 @@ environment:
     - TOOLCHAIN: "vs-12-2013-win64"
       CONFIG: Debug
 
+    # XP doesn't work: https://ci.appveyor.com/project/ruslo/crashpad/build/1.0.1/job/jp88cvbnehtadkyy
     ###
-    - TOOLCHAIN: "vs-12-2013-xp"
-      CONFIG: Release
+    # - TOOLCHAIN: "vs-12-2013-xp"
+    #   CONFIG: Release
 
-    - TOOLCHAIN: "vs-12-2013-xp"
-      CONFIG: Debug
+    # - TOOLCHAIN: "vs-12-2013-xp"
+    #   CONFIG: Debug
 
     ###
     - TOOLCHAIN: "vs-12-2013"
@@ -68,11 +70,12 @@ environment:
       CONFIG: Debug
 
     ###
-    - TOOLCHAIN: "vs-14-2015"
-      CONFIG: Release
+    # Looks like AppVeyor's SDK 10.0.10240.0 is buggy (works fine with local 10.0.14393)
+    # - TOOLCHAIN: "vs-14-2015"
+    #   CONFIG: Release
 
-    - TOOLCHAIN: "vs-14-2015"
-      CONFIG: Debug
+    # - TOOLCHAIN: "vs-14-2015"
+    #   CONFIG: Debug
 
     ###
     # - TOOLCHAIN: "vs-9-2008"
