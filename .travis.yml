@@ -29,25 +29,23 @@ addons:
       - g++-4.8
 
 # Exclude broken from: https://github.com/hunter-packages/mini_chromium/blob/hunter/.travis.yml
+# Linux is not supported: https://crashpad.chromium.org/doc/status.html
 
 matrix:
   include:
     # Linux {
-
     # - os: linux
     #   env: CONFIG=Release TOOLCHAIN=default
     # - os: linux
     #   env: CONFIG=Debug TOOLCHAIN=default
-
-    - os: linux
-      env: CONFIG=Release TOOLCHAIN=clang-libstdcxx
-    - os: linux
-      env: CONFIG=Debug TOOLCHAIN=clang-libstdcxx
-    - os: linux
-      env: CONFIG=Release TOOLCHAIN=gcc-4-8
-    - os: linux
-      env: CONFIG=Debug TOOLCHAIN=gcc-4-8
-
+    # - os: linux
+    #   env: CONFIG=Release TOOLCHAIN=clang-libstdcxx
+    # - os: linux
+    #   env: CONFIG=Debug TOOLCHAIN=clang-libstdcxx
+    # - os: linux
+    #   env: CONFIG=Release TOOLCHAIN=gcc-4-8
+    # - os: linux
+    #   env: CONFIG=Debug TOOLCHAIN=gcc-4-8
     # - os: linux
     #   env: CONFIG=Release TOOLCHAIN=android-ndk-r10e-api-19-armeabi-v7a-neon
     # - os: linux
@@ -56,19 +54,18 @@ matrix:
     #   env: CONFIG=Release TOOLCHAIN=analyze
     # - os: linux
     #   env: CONFIG=Debug TOOLCHAIN=analyze
-
-    - os: linux
-      env: CONFIG=Release TOOLCHAIN=sanitize-address
-    - os: linux
-      env: CONFIG=Debug TOOLCHAIN=sanitize-address
-    - os: linux
-      env: CONFIG=Release TOOLCHAIN=sanitize-leak
-    - os: linux
-      env: CONFIG=Debug TOOLCHAIN=sanitize-leak
-    - os: linux
-      env: CONFIG=Release TOOLCHAIN=sanitize-thread
-    - os: linux
-      env: CONFIG=Debug TOOLCHAIN=sanitize-thread
+    # - os: linux
+    #   env: CONFIG=Release TOOLCHAIN=sanitize-address
+    # - os: linux
+    #   env: CONFIG=Debug TOOLCHAIN=sanitize-address
+    # - os: linux
+    #   env: CONFIG=Release TOOLCHAIN=sanitize-leak
+    # - os: linux
+    #   env: CONFIG=Debug TOOLCHAIN=sanitize-leak
+    # - os: linux
+    #   env: CONFIG=Release TOOLCHAIN=sanitize-thread
+    # - os: linux
+    #   env: CONFIG=Debug TOOLCHAIN=sanitize-thread
     # }
 
     # OSX {
