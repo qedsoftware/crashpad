@@ -229,3 +229,9 @@ target_link_libraries(crashpad_util PUBLIC mini_chromium::base crashpad_compat)
 target_include_directories(
     crashpad_util PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..>"
 )
+
+if(APPLE)
+  target_include_directories(
+      crashpad_util PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
+  )
+endif()
