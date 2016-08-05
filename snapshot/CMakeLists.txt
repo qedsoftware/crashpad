@@ -109,6 +109,24 @@ endif()
 
 add_library(crashpad_snapshot ${sources})
 
+if(WIN32)
+  add_library(
+      crashpad_snapshot_api
+      api/module_annotations_win.cc
+      api/module_annotations_win.h
+  )
+
+  target_include_directories(
+      crashpad_snapshot_api
+      PUBLIC
+      "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..>"
+  )
+
+  target_link_libraries(
+      crashpad_snapshot_api PUBLIC crashpad_compat crashpad_util
+  )
+endif()
+
 hunter_add_package(mini_chromium)
 find_package(mini_chromium CONFIG REQUIRED)
 
