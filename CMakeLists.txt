@@ -72,3 +72,4 @@ add_subdirectory(util)
 
 add_subdirectory(client)
 add_subdirectory(snapshot)
+add_subdirectory(minidump)
