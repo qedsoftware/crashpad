@@ -109,6 +109,12 @@ endif()
 
 add_library(crashpad_snapshot ${sources})
 
+target_include_directories(
+    crashpad_snapshot
+    PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/..>"
+)
+
 if(WIN32)
   add_library(
       crashpad_snapshot_api
