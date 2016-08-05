@@ -7,7 +7,7 @@ HunterGate(
     SHA1 "fbf1686fdff02d9699e14b874d508d5b7c80b06a"
 )
 
-project(crashpad VERSION 0.0.1)
+project(crashpad VERSION 0.0.1 LANGUAGES C CXX ASM_MASM)
 
 ####
 # Installation (https://github.com/forexample/package-example)

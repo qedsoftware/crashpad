@@ -161,6 +161,18 @@ if(WIN32)
       win/time.h
       win/xp_compat.h
   )
+
+  # TODO: Why COMPILE_OPTIONS not working?
+  get_source_file_property(
+      options win/capture_context.asm COMPILE_FLAGS
+  )
+  if(options)
+    message(FATAL_ERROR "Unexpected")
+  endif()
+  set_source_files_properties(
+      win/capture_context.asm
+      PROPERTIES COMPILE_FLAGS "/safeseh"
+  )
 else()
   list(
       APPEND
