@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.15.7.tar.gz"
-    SHA1 "ebf3121da17d5f73fddfd1ca88da104bc599581d"
+    URL "https://github.com/ruslo/hunter/archive/v0.15.8.tar.gz"
+    SHA1 "fbf1686fdff02d9699e14b874d508d5b7c80b06a"
 )
 
 project(crashpad VERSION 0.0.1)
