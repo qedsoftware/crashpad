@@ -1,0 +1,117 @@
+set(
+    sources
+    capture_memory.cc
+    capture_memory.h
+    cpu_architecture.h
+    cpu_context.cc
+    cpu_context.h
+    crashpad_info_client_options.cc
+    crashpad_info_client_options.h
+    exception_snapshot.h
+    handle_snapshot.cc
+    handle_snapshot.h
+    memory_snapshot.h
+    minidump/minidump_simple_string_dictionary_reader.cc
+    minidump/minidump_simple_string_dictionary_reader.h
+    minidump/minidump_string_list_reader.cc
+    minidump/minidump_string_list_reader.h
+    minidump/minidump_string_reader.cc
+    minidump/minidump_string_reader.h
+    minidump/module_snapshot_minidump.cc
+    minidump/module_snapshot_minidump.h
+    minidump/process_snapshot_minidump.cc
+    minidump/process_snapshot_minidump.h
+    module_snapshot.h
+    process_snapshot.h
+    system_snapshot.h
+    thread_snapshot.h
+    unloaded_module_snapshot.cc
+    unloaded_module_snapshot.h
+)
+
+if(APPLE)
+  list(
+      APPEND
+      sources
+      mac/cpu_context_mac.cc
+      mac/cpu_context_mac.h
+      mac/exception_snapshot_mac.cc
+      mac/exception_snapshot_mac.h
+      mac/mach_o_image_annotations_reader.cc
+      mac/mach_o_image_annotations_reader.h
+      mac/mach_o_image_reader.cc
+      mac/mach_o_image_reader.h
+      mac/mach_o_image_segment_reader.cc
+      mac/mach_o_image_segment_reader.h
+      mac/mach_o_image_symbol_table_reader.cc
+      mac/mach_o_image_symbol_table_reader.h
+      mac/memory_snapshot_mac.cc
+      mac/memory_snapshot_mac.h
+      mac/module_snapshot_mac.cc
+      mac/module_snapshot_mac.h
+      mac/process_reader.cc
+      mac/process_reader.h
+      mac/process_snapshot_mac.cc
+      mac/process_snapshot_mac.h
+      mac/process_types.cc
+      mac/process_types.h
+      mac/process_types/all.proctype
+      mac/process_types/crashpad_info.proctype
+      mac/process_types/crashreporterclient.proctype
+      mac/process_types/custom.cc
+      mac/process_types/dyld_images.proctype
+      mac/process_types/flavors.h
+      mac/process_types/internal.h
+      mac/process_types/loader.proctype
+      mac/process_types/nlist.proctype
+      mac/process_types/traits.h
+      mac/system_snapshot_mac.cc
+      mac/system_snapshot_mac.h
+      mac/thread_snapshot_mac.cc
+      mac/thread_snapshot_mac.h
+  )
+endif()
+
+if(WIN32)
+  list(
+      APPEND
+      sources
+      win/cpu_context_win.cc
+      win/cpu_context_win.h
+      win/exception_snapshot_win.cc
+      win/exception_snapshot_win.h
+      win/capture_memory_delegate_win.cc
+      win/capture_memory_delegate_win.h
+      win/memory_map_region_snapshot_win.cc
+      win/memory_map_region_snapshot_win.h
+      win/memory_snapshot_win.cc
+      win/memory_snapshot_win.h
+      win/module_snapshot_win.cc
+      win/module_snapshot_win.h
+      win/pe_image_annotations_reader.cc
+      win/pe_image_annotations_reader.h
+      win/pe_image_reader.cc
+      win/pe_image_reader.h
+      win/pe_image_resource_reader.cc
+      win/pe_image_resource_reader.h
+      win/process_reader_win.cc
+      win/process_reader_win.h
+      win/process_snapshot_win.cc
+      win/process_snapshot_win.h
+      win/process_subrange_reader.cc
+      win/process_subrange_reader.h
+      win/system_snapshot_win.cc
+      win/system_snapshot_win.h
+      win/thread_snapshot_win.cc
+      win/thread_snapshot_win.h
+  )
+endif()
+
+add_library(crashpad_snapshot ${sources})
+
+hunter_add_package(mini_chromium)
+find_package(mini_chromium CONFIG REQUIRED)
+
+target_link_libraries(
+    crashpad_snapshot PUBLIC mini_chromium::base crashpad_compat
+)

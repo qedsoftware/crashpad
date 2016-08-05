@@ -42,7 +42,7 @@ configure_package_config_file(
 
 install(
     DIRECTORY client compat handler minidump snapshot util
-    DESTINATION "${include_install_dir}/${PROJECT_NAME}"
+    DESTINATION "${include_install_dir}"
     FILES_MATCHING PATTERN "*.h"
 )
 
@@ -71,3 +71,4 @@ add_subdirectory(compat)
 add_subdirectory(util)
 
 add_subdirectory(client)
+add_subdirectory(snapshot)
