@@ -234,6 +234,8 @@ if(APPLE)
   target_include_directories(
       crashpad_util PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
   )
+  target_link_libraries(crashpad_util PUBLIC "-framework IOKit")
+  target_link_libraries(crashpad_util PUBLIC bsm)
 endif()
 
 install(

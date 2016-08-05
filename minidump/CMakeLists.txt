@@ -59,5 +59,9 @@ hunter_add_package(mini_chromium)
 find_package(mini_chromium CONFIG REQUIRED)
 
 target_link_libraries(
-    crashpad_minidump PUBLIC mini_chromium::base crashpad_compat
+    crashpad_minidump
+    PUBLIC
+    mini_chromium::base
+    crashpad_compat
+    crashpad_snapshot
 )
