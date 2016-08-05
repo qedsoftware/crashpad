@@ -238,6 +238,11 @@ if(APPLE)
   target_link_libraries(crashpad_util PUBLIC bsm)
 endif()
 
+if(WIN32)
+  target_link_libraries(crashpad_util PUBLIC "rpcrt4") # unresolved external symbol __imp__UuidCreate@4
+  target_link_libraries(crashpad_util PUBLIC "version") # unresolved external symbol _GetFileVersionInfoSizeW@8
+endif()
+
 install(
     TARGETS crashpad_util
     EXPORT "${targets_export_name}"

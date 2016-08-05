@@ -137,5 +137,9 @@ hunter_add_package(mini_chromium)
 find_package(mini_chromium CONFIG REQUIRED)
 
 target_link_libraries(
-    crashpad_snapshot PUBLIC mini_chromium::base crashpad_compat
+    crashpad_snapshot PUBLIC mini_chromium::base crashpad_compat crashpad_util
 )
+
+if(WIN32)
+  target_link_libraries(crashpad_snapshot PUBLIC "powrprof") # unresolved external symbol _CallNtPowerInformation@20
+endif()
