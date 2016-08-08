@@ -253,6 +253,7 @@ endif()
 if(WIN32)
   target_link_libraries(crashpad_util PUBLIC "rpcrt4") # unresolved external symbol __imp__UuidCreate@4
   target_link_libraries(crashpad_util PUBLIC "version") # unresolved external symbol _GetFileVersionInfoSizeW@8
+  target_link_libraries(crashpad_util PUBLIC "winhttp") # unresolved external symbol __imp__WinHttpQueryHeaders@24
 endif()
 
 install(
