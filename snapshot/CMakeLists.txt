@@ -219,7 +219,6 @@ if(CRASHPAD_BUILD_TESTS)
       PUBLIC
       crashpad_snapshot_test_module
       crashpad_snapshot
-      crashpad_snapshot_api
       crashpad_client
       crashpad_compat
       crashpad_test
@@ -227,13 +226,19 @@ if(CRASHPAD_BUILD_TESTS)
       mini_chromium::base
       crashpad_util
   )
+  if(WIN32)
+    target_link_libraries(
+        crashpad_snapshot_test
+        PUBLIC
+        crashpad_snapshot_api
+    )
+  endif()
 
   if(APPLE)
     target_link_libraries(
         crashpad_snapshot_test
         PUBLIC
         crashpad_snapshot_test_module_crashy_initializer
-        crashpad_snapshot_test_no_op
         "-framework OpenCL"
     )
   endif()
