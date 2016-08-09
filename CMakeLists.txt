@@ -7,7 +7,13 @@ HunterGate(
     SHA1 "fbf1686fdff02d9699e14b874d508d5b7c80b06a"
 )
 
-project(crashpad VERSION 0.0.1 LANGUAGES C CXX ASM_MASM)
+project(crashpad VERSION 0.0.1)
+
+if(WIN32)
+  enable_language(ASM_MASM)
+else()
+  enable_language(ASM)
+endif()
 
 option(CRASHPAD_BUILD_TESTS "Build tests" ON)
 
