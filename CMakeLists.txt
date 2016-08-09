@@ -9,6 +9,12 @@ HunterGate(
 
 project(crashpad VERSION 0.0.1 LANGUAGES C CXX ASM_MASM)
 
+option(CRASHPAD_BUILD_TESTS "Build tests" ON)
+
+if(CRASHPAD_BUILD_TESTS)
+  enable_testing()
+endif()
+
 ####
 # Installation (https://github.com/forexample/package-example)
 
@@ -71,8 +77,10 @@ add_subdirectory(compat)
 add_subdirectory(util)
 
 add_subdirectory(client)
-add_subdirectory(minidump)
 add_subdirectory(snapshot)
+add_subdirectory(minidump)
 add_subdirectory(tools)
-add_subdirectory(test)
+if(CRASHPAD_BUILD_TESTS)
+  add_subdirectory(test)
+endif()
 add_subdirectory(handler)

@@ -64,6 +64,12 @@ if(APPLE)
       "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/mac>"
       "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/non_cxx11_lib>"
   )
+else()
+  target_include_directories(
+      crashpad_compat
+      PUBLIC
+      "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/non_mac>"
+  )
 endif()
 
 if(WIN32)

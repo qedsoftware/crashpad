@@ -54,7 +54,7 @@ target_link_libraries(
 add_executable(crashpad_handler main.cc)
 target_link_libraries(crashpad_handler PUBLIC crashpad_handler_lib)
 
-if(WIN32)
+if(WIN32 AND CRASHPAD_BUILD_TESTS)
   add_executable(crashy_program win/crashy_test_program.cc)
   target_link_libraries(
       crashy_program

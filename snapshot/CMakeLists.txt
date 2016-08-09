@@ -143,3 +143,205 @@ target_link_libraries(
 if(WIN32)
   target_link_libraries(crashpad_snapshot PUBLIC "powrprof") # unresolved external symbol _CallNtPowerInformation@20
 endif()
+
+if(CRASHPAD_BUILD_TESTS)
+  add_library(
+      crashpad_snapshot_test_lib
+      test/test_cpu_context.cc
+      test/test_cpu_context.h
+      test/test_exception_snapshot.cc
+      test/test_exception_snapshot.h
+      test/test_memory_map_region_snapshot.cc
+      test/test_memory_map_region_snapshot.h
+      test/test_memory_snapshot.cc
+      test/test_memory_snapshot.h
+      test/test_module_snapshot.cc
+      test/test_module_snapshot.h
+      test/test_process_snapshot.cc
+      test/test_process_snapshot.h
+      test/test_system_snapshot.cc
+      test/test_system_snapshot.h
+      test/test_thread_snapshot.cc
+      test/test_thread_snapshot.h
+  )
+  target_link_libraries(
+      crashpad_snapshot_test_lib
+      PUBLIC
+      crashpad_snapshot
+      crashpad_compat
+      mini_chromium::base
+      crashpad_util
+  )
+  add_test(NAME crashpad_snapshot_test_lib COMMAND crashpad_snapshot_test_lib)
+
+  set(
+      sources
+      cpu_context_test.cc
+      crashpad_info_client_options_test.cc
+      minidump/process_snapshot_minidump_test.cc
+  )
+  if(WIN32)
+    list(
+        APPEND
+        sources
+        api/module_annotations_win_test.cc
+        win/cpu_context_win_test.cc
+        win/exception_snapshot_win_test.cc
+        win/extra_memory_ranges_test.cc
+        win/pe_image_annotations_reader_test.cc
+        win/pe_image_reader_test.cc
+        win/process_reader_win_test.cc
+        win/process_snapshot_win_test.cc
+        win/system_snapshot_win_test.cc
+    )
+  endif()
+  if(APPLE)
+    list(
+        APPEND
+        sources
+        mac/cpu_context_mac_test.cc
+        mac/mach_o_image_annotations_reader_test.cc
+        mac/mach_o_image_reader_test.cc
+        mac/mach_o_image_segment_reader_test.cc
+        mac/process_reader_test.cc
+        mac/process_types_test.cc
+        mac/system_snapshot_mac_test.cc
+    )
+  endif()
+
+  hunter_add_package(GTest)
+  find_package(GTest CONFIG REQUIRED)
+
+  add_executable(crashpad_snapshot_test ${sources})
+
+  target_link_libraries(
+      crashpad_snapshot_test
+      PUBLIC
+      crashpad_snapshot_test_module
+      crashpad_snapshot
+      crashpad_snapshot_api
+      crashpad_client
+      crashpad_compat
+      crashpad_test
+      GTest::main
+      mini_chromium::base
+      crashpad_util
+  )
+
+  if(APPLE)
+    target_link_libraries(
+        crashpad_snapshot_test
+        PUBLIC
+        crashpad_snapshot_test_module_crashy_initializer
+        crashpad_snapshot_test_no_op
+        "-framework OpenCL"
+    )
+  endif()
+
+  if(WIN32)
+    target_link_libraries(
+        crashpad_snapshot_test
+        PUBLIC
+        crashpad_snapshot_test_image_reader_module
+    )
+  endif()
+
+  add_test(NAME crashpad_snapshot_test COMMAND crashpad_snapshot_test)
+
+  add_library(
+      crashpad_snapshot_test_module crashpad_info_client_options_test_module.cc
+  )
+  target_link_libraries(
+      crashpad_snapshot_test_module
+      PUBLIC
+      crashpad_client
+      mini_chromium::base
+  )
+
+  if(APPLE)
+    add_library(
+        crashpad_snapshot_test_module_crashy_initializer
+        mac/mach_o_image_annotations_reader_test_module_crashy_initializer.cc
+    )
+    add_executable(
+        crashpad_snapshot_test_no_op
+        mac/mach_o_image_annotations_reader_test_no_op.cc
+    )
+  endif()
+
+  if(WIN32)
+    add_executable(
+        crashpad_snapshot_test_crashing_child
+        win/crashpad_snapshot_test_crashing_child.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_crashing_child
+        PUBLIC
+        crashpad_client
+        crashpad_compat
+        mini_chromium::base
+        crashpad_util
+    )
+
+    add_executable(
+        crashpad_snapshot_test_dump_without_crashing
+        win/crashpad_snapshot_test_dump_without_crashing.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_dump_without_crashing
+        PUBLIC
+        crashpad_client
+        crashpad_compat
+        mini_chromium::base
+        crashpad_util
+    )
+
+    add_executable(
+        crashpad_snapshot_test_extra_memory_ranges
+        win/crashpad_snapshot_test_extra_memory_ranges.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_extra_memory_ranges
+        PUBLIC
+        crashpad_client
+        crashpad_compat
+        mini_chromium::base
+    )
+
+    add_executable(
+        crashpad_snapshot_test_image_reader
+        win/crashpad_snapshot_test_image_reader.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_image_reader
+        PUBLIC
+        crashpad_client
+        crashpad_compat
+        mini_chromium::base
+        crashpad_util
+    )
+
+    add_library(
+        crashpad_snapshot_test_image_reader_module
+        win/crashpad_snapshot_test_image_reader_module.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_image_reader_module
+        PUBLIC
+        crashpad_client
+        mini_chromium::base
+    )
+
+    add_executable(
+        crashpad_snapshot_test_simple_annotations
+        win/crashpad_snapshot_test_simple_annotations.cc
+    )
+    target_link_libraries(
+        crashpad_snapshot_test_simple_annotations
+        PUBLIC
+        crashpad_client
+        crashpad_compat
+        mini_chromium::base
+    )
+  endif()
+endif()

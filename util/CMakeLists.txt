@@ -264,3 +264,129 @@ install(
     RUNTIME DESTINATION "bin"
     INCLUDES DESTINATION "${include_install_dir}"
 )
+
+if(CRASHPAD_BUILD_TESTS)
+  if(WIN32)
+    add_executable(
+        crashpad_util_test_process_info_test_child
+        win/process_info_test_child.cc
+    )
+
+    target_compile_definitions(
+        crashpad_util_test_process_info_test_child PUBLIC "UNICODE" "_UNICODE"
+    )
+
+    if(MSVC)
+      set_target_properties(
+          crashpad_util_test_process_info_test_child
+          PROPERTIES
+          LINK_FLAGS
+          /BASE:0x78000000
+          /DYNAMICBASE:NO
+          /FIXED
+      )
+    endif()
+  endif()
+
+  set(
+      sources
+      file/file_io_test.cc
+      file/string_file_test.cc
+      misc/clock_test.cc
+      misc/initialization_state_dcheck_test.cc
+      misc/initialization_state_test.cc
+      misc/scoped_forbid_return_test.cc
+      misc/random_string_test.cc
+      misc/uuid_test.cc
+      net/http_body_test.cc
+      net/http_body_test_util.cc
+      net/http_body_test_util.h
+      net/http_multipart_builder_test.cc
+      net/http_transport_test.cc
+      numeric/checked_address_range_test.cc
+      numeric/checked_range_test.cc
+      numeric/in_range_cast_test.cc
+      numeric/int128_test.cc
+      stdlib/aligned_allocator_test.cc
+      stdlib/map_insert_test.cc
+      stdlib/string_number_conversion_test.cc
+      stdlib/strlcpy_test.cc
+      stdlib/strnlen_test.cc
+      string/split_string_test.cc
+      synchronization/semaphore_test.cc
+      thread/thread_log_messages_test.cc
+      thread/thread_test.cc
+      thread/worker_thread_test.cc
+  )
+
+  if(APPLE)
+    list(
+        APPEND
+        sources
+        mac/launchd_test.mm
+        mac/mac_util_test.mm
+        mac/service_management_test.mm
+        mac/xattr_test.cc
+        mach/child_port_handshake_test.cc
+        mach/child_port_server_test.cc
+        mach/composite_mach_message_server_test.cc
+        mach/exc_client_variants_test.cc
+        mach/exc_server_variants_test.cc
+        mach/exception_behaviors_test.cc
+        mach/exception_ports_test.cc
+        mach/exception_types_test.cc
+        mach/mach_extensions_test.cc
+        mach/mach_message_server_test.cc
+        mach/mach_message_test.cc
+        mach/notify_server_test.cc
+        mach/scoped_task_suspend_test.cc
+        mach/symbolic_constants_mach_test.cc
+        mach/task_memory_test.cc
+    )
+  endif()
+
+  if(WIN32)
+    list(
+        APPEND
+        sources
+        win/capture_context_test.cc
+        win/command_line_test.cc
+        win/critical_section_with_debug_info_test.cc
+        win/exception_handler_server_test.cc
+        win/get_function_test.cc
+        win/handle_test.cc
+        win/process_info_test.cc
+        win/scoped_process_suspend_test.cc
+        win/time_test.cc
+    )
+  else()
+    list(
+        APPEND
+        sources
+        posix/process_info_test.cc
+        posix/symbolic_constants_posix_test.cc
+    )
+  endif()
+
+  hunter_add_package(GTest)
+  find_package(GTest CONFIG REQUIRED)
+  find_package(GMock CONFIG REQUIRED)
+
+  add_executable(crashpad_util_test ${sources})
+
+  target_link_libraries(
+      crashpad_util_test
+      PUBLIC
+      crashpad_util
+      crashpad_client
+      crashpad_compat
+      crashpad_test
+      GMock::main
+      GTest::gtest
+      mini_chromium::base
+  )
+
+  if(WIN32)
+    target_link_libraries(crashpad_util_test PUBLIC "imagehlp") # unresolved external symbol __imp__GetTimestampForLoadedLibrary@4
+  endif()
+endif()

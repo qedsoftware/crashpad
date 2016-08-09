@@ -65,3 +65,56 @@ target_link_libraries(
     crashpad_compat
     crashpad_snapshot
 )
+
+if(CRASHPAD_BUILD_TESTS)
+  hunter_add_package(GTest)
+  find_package(GTest CONFIG REQUIRED)
+
+  add_executable(
+      crashpad_minidump_test
+      minidump_context_writer_test.cc
+      minidump_crashpad_info_writer_test.cc
+      minidump_exception_writer_test.cc
+      minidump_handle_writer_test.cc
+      minidump_file_writer_test.cc
+      minidump_memory_info_writer_test.cc
+      minidump_memory_writer_test.cc
+      minidump_misc_info_writer_test.cc
+      minidump_module_crashpad_info_writer_test.cc
+      minidump_module_writer_test.cc
+      minidump_rva_list_writer_test.cc
+      minidump_simple_string_dictionary_writer_test.cc
+      minidump_string_writer_test.cc
+      minidump_system_info_writer_test.cc
+      minidump_thread_id_map_test.cc
+      minidump_thread_writer_test.cc
+      minidump_unloaded_module_writer_test.cc
+      minidump_user_stream_writer_test.cc
+      minidump_writable_test.cc
+      test/minidump_context_test_util.cc
+      test/minidump_context_test_util.h
+      test/minidump_file_writer_test_util.cc
+      test/minidump_file_writer_test_util.h
+      test/minidump_memory_writer_test_util.cc
+      test/minidump_memory_writer_test_util.h
+      test/minidump_rva_list_test_util.cc
+      test/minidump_rva_list_test_util.h
+      test/minidump_string_writer_test_util.cc
+      test/minidump_string_writer_test_util.h
+      test/minidump_writable_test_util.cc
+      test/minidump_writable_test_util.h
+  )
+
+  target_link_libraries(
+      crashpad_minidump_test
+      PUBLIC
+      crashpad_minidump
+      crashpad_snapshot_test_lib
+      crashpad_test
+      GTest::main
+      mini_chromium::base
+      crashpad_util
+  )
+
+  add_test(NAME crashpad_minidump_test COMMAND crashpad_minidump_test)
+endif()

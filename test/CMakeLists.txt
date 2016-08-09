@@ -69,3 +69,58 @@ target_link_libraries(
     crashpad_util
     GTest::gtest
 )
+
+add_executable(
+    crashpad_test_test_multiprocess_exec_test_child
+    multiprocess_exec_test_child.cc
+)
+add_test(
+    NAME crashpad_test_test_multiprocess_exec_test_child
+    COMMAND crashpad_test_test_multiprocess_exec_test_child
+)
+
+set(
+    sources
+    multiprocess_exec_test.cc
+    paths_test.cc
+    scoped_temp_dir_test.cc
+)
+
+if(APPLE)
+  list(
+      APPEND
+      sources
+      mac/mach_multiprocess_test.cc
+  )
+endif()
+
+if(WIN32)
+  list(
+      APPEND
+      sources
+      win/win_child_process_test.cc
+      win/win_multiprocess_test.cc
+  )
+else()
+  list(
+      APPEND
+      sources
+      multiprocess_posix_test.cc
+  )
+endif()
+
+add_executable(crashpad_test_test ${sources})
+
+hunter_add_package(GTest)
+find_package(GMock CONFIG REQUIRED)
+
+target_link_libraries(
+    crashpad_test_test
+    PUBLIC
+    crashpad_test
+    crashpad_compat
+    GMock::main
+    GTest::gtest
+    mini_chromium::base
+    crashpad_util
+)
