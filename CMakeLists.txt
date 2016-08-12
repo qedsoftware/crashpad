@@ -21,6 +21,11 @@ if(CRASHPAD_BUILD_TESTS)
   enable_testing()
 endif()
 
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+endif()
+
 ####
 # Installation (https://github.com/forexample/package-example)
 
