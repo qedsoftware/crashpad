@@ -286,6 +286,11 @@ if(CRASHPAD_BUILD_TESTS)
           /FIXED
       )
     endif()
+
+    add_test(
+        NAME crashpad_util_test_process_info_test_child
+        COMMAND crashpad_util_test_process_info_test_child
+    )
   endif()
 
   set(
@@ -389,4 +394,6 @@ if(CRASHPAD_BUILD_TESTS)
   if(WIN32)
     target_link_libraries(crashpad_util_test PUBLIC "imagehlp") # unresolved external symbol __imp__GetTimestampForLoadedLibrary@4
   endif()
+
+  add_test(NAME crashpad_util_test COMMAND crashpad_util_test)
 endif()

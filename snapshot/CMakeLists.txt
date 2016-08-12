@@ -272,6 +272,10 @@ if(CRASHPAD_BUILD_TESTS)
         crashpad_snapshot_test_no_op
         mac/mach_o_image_annotations_reader_test_no_op.cc
     )
+    add_test(
+        NAME crashpad_snapshot_test_no_op
+        COMMAND crashpad_snapshot_test_no_op
+    )
   endif()
 
   if(WIN32)
@@ -287,6 +291,10 @@ if(CRASHPAD_BUILD_TESTS)
         mini_chromium::base
         crashpad_util
     )
+    add_test(
+        NAME crashpad_snapshot_test_crashing_child
+        COMMAND crashpad_snapshot_test_crashing_child
+    )
 
     add_executable(
         crashpad_snapshot_test_dump_without_crashing
@@ -300,6 +308,10 @@ if(CRASHPAD_BUILD_TESTS)
         mini_chromium::base
         crashpad_util
     )
+    add_test(
+        NAME crashpad_snapshot_test_dump_without_crashing
+        COMMAND crashpad_snapshot_test_dump_without_crashing
+    )
 
     add_executable(
         crashpad_snapshot_test_extra_memory_ranges
@@ -311,6 +323,10 @@ if(CRASHPAD_BUILD_TESTS)
         crashpad_client
         crashpad_compat
         mini_chromium::base
+    )
+    add_test(
+        NAME crashpad_snapshot_test_extra_memory_ranges
+        COMMAND crashpad_snapshot_test_extra_memory_ranges
     )
 
     add_executable(
@@ -324,6 +340,10 @@ if(CRASHPAD_BUILD_TESTS)
         crashpad_compat
         mini_chromium::base
         crashpad_util
+    )
+    add_test(
+        NAME crashpad_snapshot_test_image_reader
+        COMMAND crashpad_snapshot_test_image_reader
     )
 
     add_library(
@@ -347,6 +367,10 @@ if(CRASHPAD_BUILD_TESTS)
         crashpad_client
         crashpad_compat
         mini_chromium::base
+    )
+    add_test(
+        NAME crashpad_snapshot_test_simple_annotations
+        COMMAND crashpad_snapshot_test_simple_annotations
     )
   endif()
 endif()

@@ -124,3 +124,5 @@ target_link_libraries(
     mini_chromium::base
     crashpad_util
 )
+
+add_test(NAME crashpad_test_test COMMAND crashpad_test_test)
