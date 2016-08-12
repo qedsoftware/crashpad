@@ -391,9 +391,40 @@ if(CRASHPAD_BUILD_TESTS)
       mini_chromium::base
   )
 
+  set(dst_dir "$<TARGET_FILE_DIR:crashpad_util_test>/util/net/")
+  set(src_txt "${PROJECT_SOURCE_DIR}/util/net/testdata/ascii_http_body.txt")
+  set(src_dat "${PROJECT_SOURCE_DIR}/util/net/testdata/binary_http_body.dat")
+  set(src_py "${PROJECT_SOURCE_DIR}/util/net/http_transport_test_server.py")
+  if(NOT EXISTS "${src_txt}")
+    message(FATAL_ERROR "File not found: ${src_txt}")
+  endif()
+  if(NOT EXISTS "${src_dat}")
+    message(FATAL_ERROR "File not found: ${src_dat}")
+  endif()
+  if(NOT EXISTS "${src_py}")
+    message(FATAL_ERROR "File not found: ${src_py}")
+  endif()
+
+  add_custom_command(
+      TARGET crashpad_util_test
+      POST_BUILD
+      COMMAND
+      "${CMAKE_COMMAND}" -E make_directory "${dst_dir}/testdata"
+      COMMAND
+      "${CMAKE_COMMAND}" -E copy "${src_txt}" "${dst_dir}/testdata"
+      COMMAND
+      "${CMAKE_COMMAND}" -E copy "${src_dat}" "${dst_dir}/testdata"
+      COMMAND
+      "${CMAKE_COMMAND}" -E copy "${src_py}" "${dst_dir}"
+  )
+
   if(WIN32)
     target_link_libraries(crashpad_util_test PUBLIC "imagehlp") # unresolved external symbol __imp__GetTimestampForLoadedLibrary@4
   endif()
 
-  add_test(NAME crashpad_util_test COMMAND crashpad_util_test)
+  add_test(
+      NAME crashpad_util_test
+      COMMAND crashpad_util_test
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_util_test>"
+  )
 endif()
