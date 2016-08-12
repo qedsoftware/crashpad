@@ -172,7 +172,6 @@ if(CRASHPAD_BUILD_TESTS)
       mini_chromium::base
       crashpad_util
   )
-  add_test(NAME crashpad_snapshot_test_lib COMMAND crashpad_snapshot_test_lib)
 
   set(
       sources
