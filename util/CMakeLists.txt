@@ -286,11 +286,6 @@ if(CRASHPAD_BUILD_TESTS)
           /FIXED
       )
     endif()
-
-    add_test(
-        NAME crashpad_util_test_process_info_test_child
-        COMMAND crashpad_util_test_process_info_test_child
-    )
   endif()
 
   set(
