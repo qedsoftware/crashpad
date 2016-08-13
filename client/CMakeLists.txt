@@ -96,7 +96,16 @@ if(CRASHPAD_BUILD_TESTS)
       crashpad_util
   )
 
+  add_custom_command(
+      TARGET crashpad_client_test
+      POST_BUILD
+      COMMAND
+      "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:crashpad_handler>" "$<TARGET_FILE_DIR:crashpad_client_test>"
+  )
+
   add_test(
-      NAME crashpad_client_test COMMAND crashpad_client_test
+      NAME crashpad_client_test
+      COMMAND crashpad_client_test
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_client_test>"
   )
 endif()
