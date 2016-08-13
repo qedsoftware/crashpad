@@ -248,17 +248,19 @@ if(CRASHPAD_BUILD_TESTS)
     )
   endif()
 
-  add_custom_command(
-      TARGET
-      crashpad_snapshot_test
-      POST_BUILD
-      COMMAND
-      "${CMAKE_COMMAND}"
-      -E
-      copy
-      "$<TARGET_FILE:crashpad_snapshot_test_module_crashy_initializer>"
-      "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
-  )
+  if(APPLE)
+    add_custom_command(
+        TARGET
+        crashpad_snapshot_test
+        POST_BUILD
+        COMMAND
+        "${CMAKE_COMMAND}"
+        -E
+        copy
+        "$<TARGET_FILE:crashpad_snapshot_test_module_crashy_initializer>"
+        "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
+    )
+  endif()
 
   add_test(
       NAME crashpad_snapshot_test
