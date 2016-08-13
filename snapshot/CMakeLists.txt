@@ -216,7 +216,6 @@ if(CRASHPAD_BUILD_TESTS)
   target_link_libraries(
       crashpad_snapshot_test
       PUBLIC
-      crashpad_snapshot_test_module
       crashpad_snapshot
       crashpad_client
       crashpad_compat
@@ -237,7 +236,6 @@ if(CRASHPAD_BUILD_TESTS)
     target_link_libraries(
         crashpad_snapshot_test
         PUBLIC
-        crashpad_snapshot_test_module_crashy_initializer
         "-framework OpenCL"
     )
   endif()
@@ -250,23 +248,55 @@ if(CRASHPAD_BUILD_TESTS)
     )
   endif()
 
-  add_test(NAME crashpad_snapshot_test COMMAND crashpad_snapshot_test)
+  add_custom_command(
+      TARGET
+      crashpad_snapshot_test
+      POST_BUILD
+      COMMAND
+      "${CMAKE_COMMAND}"
+      -E
+      copy
+      "$<TARGET_FILE:crashpad_snapshot_test_module_crashy_initializer>"
+      "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
+  )
+
+  add_test(
+      NAME crashpad_snapshot_test
+      COMMAND crashpad_snapshot_test --gtest_filter=-SystemSnapshotMacTest.TimeZone # FIXME
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
+  )
 
   add_library(
-      crashpad_snapshot_test_module crashpad_info_client_options_test_module.cc
+      crashpad_snapshot_test_module MODULE crashpad_info_client_options_test_module.cc
   )
+
+  set_target_properties(
+      crashpad_snapshot_test_module
+      PROPERTIES
+      "DEBUG_POSTFIX" ""
+      PREFIX ""
+  )
+
   target_link_libraries(
       crashpad_snapshot_test_module
       PUBLIC
-      crashpad_client
       mini_chromium::base
+      crashpad_client
   )
 
   if(APPLE)
     add_library(
         crashpad_snapshot_test_module_crashy_initializer
+        MODULE
         mac/mach_o_image_annotations_reader_test_module_crashy_initializer.cc
     )
+    set_target_properties(
+        crashpad_snapshot_test_module_crashy_initializer
+        PROPERTIES
+        "DEBUG_POSTFIX" ""
+        PREFIX ""
+    )
+
     add_executable(
         crashpad_snapshot_test_no_op
         mac/mach_o_image_annotations_reader_test_no_op.cc
