@@ -120,4 +120,4 @@ install:
   - cmd: set MINGW_PATH=C:\Qt\Tools\mingw492_32\bin
 
 build_script:
-  - cmd: python %POLLY_SOURCE_DIR%\bin\build.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose
+  - cmd: python %POLLY_SOURCE_DIR%\bin\build.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose --test
