@@ -240,14 +240,6 @@ if(CRASHPAD_BUILD_TESTS)
     )
   endif()
 
-  if(WIN32)
-    target_link_libraries(
-        crashpad_snapshot_test
-        PUBLIC
-        crashpad_snapshot_test_image_reader_module
-    )
-  endif()
-
   if(APPLE)
     add_custom_command(
         TARGET
@@ -262,13 +254,25 @@ if(CRASHPAD_BUILD_TESTS)
     )
   endif()
 
-  if(NOT WIN32) # FIXME
-    add_test(
-        NAME crashpad_snapshot_test
-        COMMAND crashpad_snapshot_test --gtest_filter=-SystemSnapshotMacTest.TimeZone # FIXME
-        WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
-    )
+  set(gtest_suppress "")
+  if(APPLE)
+    set(gtest_suppress "SystemSnapshotMacTest.TimeZone")
+  else()
+    set(gtest_suppress "SystemSnapshotWinTest.TimeZone")
   endif()
+
+  if(WIN32)
+    string(FIND "${CMAKE_CXX_FLAGS_RELEASE}" "/MD" dynamic)
+    if(NOT dynamic EQUAL -1)
+      set(gtest_suppress "${gtest_suppress}:PEImageReader.VSFixedFileInfo_AllModules")
+    endif()
+  endif()
+
+  add_test(
+      NAME crashpad_snapshot_test
+      COMMAND crashpad_snapshot_test --gtest_filter=-${gtest_suppress} # FIXME
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_snapshot_test>"
+  )
 
   add_library(
       crashpad_snapshot_test_module MODULE crashpad_info_client_options_test_module.cc
@@ -365,6 +369,7 @@ if(CRASHPAD_BUILD_TESTS)
 
     add_library(
         crashpad_snapshot_test_image_reader_module
+        MODULE
         win/crashpad_snapshot_test_image_reader_module.cc
     )
     target_link_libraries(
@@ -372,6 +377,12 @@ if(CRASHPAD_BUILD_TESTS)
         PUBLIC
         crashpad_client
         mini_chromium::base
+    )
+    set_target_properties(
+        crashpad_snapshot_test_image_reader_module
+        PROPERTIES
+        "DEBUG_POSTFIX" ""
+        PREFIX ""
     )
 
     add_executable(
