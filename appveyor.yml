@@ -70,6 +70,13 @@ environment:
       CONFIG: Debug
 
     ###
+    - TOOLCHAIN: "vs-12-2013-mt"
+      CONFIG: Release
+
+    - TOOLCHAIN: "vs-12-2013-mt"
+      CONFIG: Debug
+
+    ###
     # Looks like AppVeyor's SDK 10.0.10240.0 is buggy (works fine with local 10.0.14393)
     # - TOOLCHAIN: "vs-14-2015"
     #   CONFIG: Release
