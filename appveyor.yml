@@ -120,4 +120,6 @@ install:
   - cmd: set MINGW_PATH=C:\Qt\Tools\mingw492_32\bin
 
 build_script:
-  - cmd: python %POLLY_SOURCE_DIR%\bin\build.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose --test
+  # Need to have Python 2.7 in PATH
+  - cmd: set PATH=C:\Python27-x64;%PATH%
+  - cmd: C:\Python34-x64\python.exe %POLLY_SOURCE_DIR%\bin\build.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose --test
