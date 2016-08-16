@@ -419,7 +419,7 @@ if(CRASHPAD_BUILD_TESTS)
 
   add_test(
       NAME crashpad_util_test
-      COMMAND crashpad_util_test
+      COMMAND crashpad_util_test --gtest_filter=-ProcessInfo.OtherProcessWOW64 # FIXME
       WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_util_test>"
   )
 endif()
