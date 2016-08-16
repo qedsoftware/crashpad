@@ -417,11 +417,9 @@ if(CRASHPAD_BUILD_TESTS)
     target_link_libraries(crashpad_util_test PUBLIC "imagehlp") # unresolved external symbol __imp__GetTimestampForLoadedLibrary@4
   endif()
 
-  if(NOT WIN32) # FIXME
-    add_test(
-        NAME crashpad_util_test
-        COMMAND crashpad_util_test
-        WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_util_test>"
-    )
-  endif()
+  add_test(
+      NAME crashpad_util_test
+      COMMAND crashpad_util_test
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:crashpad_util_test>"
+  )
 endif()
