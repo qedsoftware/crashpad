@@ -258,13 +258,25 @@ if(CRASHPAD_BUILD_TESTS)
   if(APPLE)
     set(gtest_suppress "SystemSnapshotMacTest.TimeZone")
   else()
-    set(gtest_suppress "SystemSnapshotWinTest.TimeZone")
+    set(gtest_suppress "SystemSnapshotWinTest.TimeZone") # Let's have any entry as initial even if it's not Windows
   endif()
 
   if(WIN32)
     string(FIND "${CMAKE_CXX_FLAGS_RELEASE}" "/MD" dynamic)
     if(NOT dynamic EQUAL -1)
       set(gtest_suppress "${gtest_suppress}:PEImageReader.VSFixedFileInfo_AllModules")
+    endif()
+
+    if(NOT WIN_X86_ARCH)
+      # FIXME: want to start x86 process from x64 toolchain but files located in
+      # different build trees (CMake multi-config missing feature)
+      set(gtest_suppress "${gtest_suppress}:ExceptionSnapshotWinTest.ChildCrashWOW64")
+      set(gtest_suppress "${gtest_suppress}:SimulateCrash.ChildDumpWithoutCrashingWOW64")
+      set(gtest_suppress "${gtest_suppress}:ExtraMemoryRanges.DontCrashWOW64")
+      set(gtest_suppress "${gtest_suppress}:ExtraMemoryRanges.CrashDebugBreakWOW64")
+      set(gtest_suppress "${gtest_suppress}:PEImageAnnotationsReader.DontCrashWOW64")
+      set(gtest_suppress "${gtest_suppress}:PEImageAnnotationsReader.CrashDebugBreakWOW64")
+      set(gtest_suppress "${gtest_suppress}:ProcessSnapshotTest.CrashpadInfoChildWOW64")
     endif()
   endif()
 

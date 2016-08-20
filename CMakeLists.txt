@@ -78,6 +78,12 @@ install(
 
 ###
 
+set(WIN_X86_ARCH FALSE)
+if(WIN32)
+  include(CheckCXXSymbolExists)
+  check_cxx_symbol_exists(_M_IX86 "" WIN_X86_ARCH)
+endif()
+
 if(APPLE)
   add_subdirectory(third_party/apple_cctools)
 endif()

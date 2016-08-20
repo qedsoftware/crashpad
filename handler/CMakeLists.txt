@@ -81,7 +81,7 @@ if(WIN32 AND CRASHPAD_BUILD_TESTS)
       crashpad_client
   )
 
-  add_library(loader_lock_dll win/loader_lock_dll.cc)
+  add_library(loader_lock_dll MODULE win/loader_lock_dll.cc)
 
   add_executable(self_destroying_program win/self_destroying_test_program.cc)
   target_link_libraries(
@@ -92,9 +92,7 @@ if(WIN32 AND CRASHPAD_BUILD_TESTS)
       crashpad_snapshot
   )
 
-  include(CheckCXXSymbolExists)
-  check_cxx_symbol_exists(_M_IX86 "" x86_arch)
-  if(x86_arch)
+  if(WIN_X86_ARCH)
     add_executable(crashy_z7_loader win/crashy_test_z7_loader.cc)
     target_link_libraries(
         crashy_z7_loader
