@@ -278,6 +278,10 @@ if(CRASHPAD_BUILD_TESTS)
       set(gtest_suppress "${gtest_suppress}:PEImageAnnotationsReader.CrashDebugBreakWOW64")
       set(gtest_suppress "${gtest_suppress}:ProcessSnapshotTest.CrashpadInfoChildWOW64")
     endif()
+
+    # Only Debug build with '*.pdb' files
+    set(gtest_suppress "${gtest_suppress}$<$<NOT:$<CONFIG:Debug>>::PEImageReader.DebugDirectory>")
+    set(gtest_suppress "${gtest_suppress}$<$<NOT:$<CONFIG:Debug>>::ProcessSnapshotTest.CrashpadInfoChild>")
   endif()
 
   add_test(
