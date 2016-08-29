@@ -23,6 +23,15 @@ target_link_libraries(
     generate_dump PUBLIC crashpad_tool_support crashpad_minidump crashpad_util
 )
 
+install(
+    TARGETS generate_dump crashpad_database_util
+    EXPORT "${targets_export_name}"
+    LIBRARY DESTINATION "lib"
+    ARCHIVE DESTINATION "lib"
+    RUNTIME DESTINATION "bin"
+    INCLUDES DESTINATION "${include_install_dir}"
+)
+
 if(APPLE)
   set(
       plist_flags
@@ -62,5 +71,18 @@ if(APPLE)
       crashpad_tool_support
       crashpad_util
       crashpad_client
+  )
+
+  install(
+      TARGETS
+      catch_exception_tool
+      exception_port_tool
+      on_demand_service_tool
+      run_with_crashpad
+      EXPORT "${targets_export_name}"
+      LIBRARY DESTINATION "lib"
+      ARCHIVE DESTINATION "lib"
+      RUNTIME DESTINATION "bin"
+      INCLUDES DESTINATION "${include_install_dir}"
   )
 endif()
